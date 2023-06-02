@@ -16,7 +16,6 @@ $messageForm.addEventListener('submit', (e) => {
   $messageFormTextarea.value = ''
   $messageFormTextarea.focus()
   socket.emit('send-message', message_text, () => {
-    console.log('Message acknowledgement');
     $messageFormInput.disabled = false
   })
 })
@@ -38,13 +37,17 @@ $locationBtn.addEventListener('click', (e) => {
 /*  Socket Events */
 
 socket.on('message', (message) => {
-  console.log(message);
+  console.log(message.text);
 })
 
 socket.on('message-sent', (message) => {
-  document.getElementById('message-list').innerHTML += `<div class="card mb-2 p-2">${message}</div>`
+  document.getElementById('message-list').innerHTML += `<div class="card mb-2 p-2">${moment(message.createdAt).format('H:mm')} - ${message.text}</div>`
 })
 
-socket.on('location-message', (url) => {
-  console.log(url);
+socket.on('location-message', (location) => {
+  document.getElementById('message-list').innerHTML += `
+    <div class="card mb-2 p-2 d-block">
+      <span>${moment(location.createdAt).format('H:mm')} - </span>
+      <a href="${location.text}" target="_blank">This is my location</a>
+    </div>`
 })
