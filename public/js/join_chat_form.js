@@ -5,9 +5,6 @@ class JoinChatForm extends HTMLElement {
   }
 
   connectedCallback() {
-  //   this.innerHTML = `
-  //   <h1>Join Form</h1>
-  // `
   this.renderJoinForm()
   }
 
