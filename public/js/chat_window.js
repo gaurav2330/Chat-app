@@ -1,4 +1,3 @@
-const { io } = require('socket.io-client');
 class ChatWindow extends HTMLElement {
 
   constructor () {
@@ -36,7 +35,6 @@ class ChatWindow extends HTMLElement {
   }
 
   setGlobalValues () {
-    this.socket = io();
     this.messageForm = document.getElementById('message-form')
     this.messageFormInput = this.messageForm.querySelector('input')
     this.messageFormTextarea = this.messageForm.querySelector('textarea')
@@ -54,7 +52,7 @@ class ChatWindow extends HTMLElement {
     })
 
     this.socket.on('message-sent', (message) => {
-      document.getElementById('message-list').innerHTML += `<div class="card mb-2 p-2">${moment(message.createdAt).format('H:mm')} - ${message.text}</div>`
+      document.getElementById('message-list').innerHTML += `<div class="card mb-2 p-2"><span>${message.username}</span><span>${moment(message.createdAt).format('H:mm')} - ${message.text}</span></div>`
     })
 
     this.socket.on('location-message', (location) => {
@@ -63,6 +61,10 @@ class ChatWindow extends HTMLElement {
           <span>${moment(location.createdAt).format('H:mm')} - </span>
           <a href="${location.text}" target="_blank">This is my location</a>
         </div>`
+    })
+
+    this.socket.on('roomdata', (roomdata) => {
+      console.log(roomdata.users);
     })
   }
 
